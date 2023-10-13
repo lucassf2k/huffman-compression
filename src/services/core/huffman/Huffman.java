@@ -91,7 +91,6 @@ public class Huffman {
           ch == '/' ||
           ch == '.' ||
           ch == '-' || 
-          ch == '@' ||
           ch == '#'
         ) {
           frequenciesChars[ch]++;
