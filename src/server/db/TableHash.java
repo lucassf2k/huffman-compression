@@ -58,11 +58,11 @@ public class TableHash {
     }
   }
 
-  public Node search(long k) {
+  public Vehicle search(long k) {
     var h = this.hash(k);
     var node = this.table[h];
     while(node != null) {
-      if (node.getKey() == k) return node;
+      if (node.getKey() == k) return node.getVehicle();
       node = node.getNext();
     }
     return null;

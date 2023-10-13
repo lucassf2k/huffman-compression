@@ -8,7 +8,8 @@ import server.entities.Vehicle;
 import services.CryptoServices;
 
 public class Server {
-    private TableHash db = new TableHash(17);  
+    // 19  
+    private TableHash db = new TableHash(19);  
     
     public Server() {
         this.db.insert(new Vehicle("EFG-3456", 34562345678L, "UrbanRunner", "06/08/2022", new Driver("Sophia Adams", "666.555.444-33")));
@@ -70,7 +71,9 @@ public class Server {
     }
 
     public void save(String vehicleCompressed) {
+        System.out.println("Compressão: " + vehicleCompressed);
         var vehicleDecompressed = CryptoServices.decompress(vehicleCompressed);
+        System.out.println("Decompressão " + vehicleDecompressed);
         var vehicleDatas = vehicleDecompressed.split("#");
         var vehicle = new Vehicle(vehicleDatas[0], Long.parseLong(vehicleDatas[1]), vehicleDatas[2], vehicleDatas[3], new Driver(vehicleDatas[4], vehicleDatas[5]));
         this.db.insert(vehicle);
@@ -94,9 +97,14 @@ public class Server {
         var renavamDecompressed = CryptoServices.decompress(renavamCompressed);
         var renavam = Long.parseLong(renavamDecompressed);
         var nodeVehicle = this.db.search(renavam);
-        return CryptoServices.compress(
-            nodeVehicle.getVehicle().toString()
-        );
+        if (nodeVehicle != null) {
+            return CryptoServices.compress(
+                nodeVehicle.toString()
+            );
+        } else {
+            return "";
+        }
+       
     }
 
     public boolean update(String renavamCompressed, String vehicleCompressed) {
@@ -104,13 +112,7 @@ public class Server {
         var renavam = Long.parseLong(renavamDecompressed);
         var vehicleDecompressed = CryptoServices.decompress(vehicleCompressed);
         var vehicleDatas = vehicleDecompressed.split("#");
-        var vehicle = new Vehicle(
-            vehicleDatas[0],
-            Long.parseLong(vehicleDatas[1]),
-            vehicleDatas[2],
-            vehicleDatas[3],
-            new Driver(vehicleDatas[4],vehicleDatas[5])
-        ); 
+        var vehicle = new Vehicle(vehicleDatas[0], renavam, vehicleDatas[2], vehicleDatas[3], new Driver(vehicleDatas[4], vehicleDatas[5])); 
         this.db.update(renavam, vehicle);
         return true;
     } 

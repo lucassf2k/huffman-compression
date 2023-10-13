@@ -39,7 +39,7 @@ public class Huffman {
       node.getRight() == null && 
       this.getRoot().getCharacter() == '-'
     ) {
-      System.out.println(node.getCharacter() + ":" + str);
+      System.out.println(node.getCharacter() + ";" + str);
       return;
     } else {
       this.print(node.getLeft(), str.concat("0"));

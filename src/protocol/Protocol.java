@@ -55,6 +55,10 @@ public class Protocol {
                 var renavamString = String.valueOf(data.getRenavam());
                 var renavamCompressed = CryptoServices.compress(renavamString);
                 var vehicleCompressed =  this.server.getOne(renavamCompressed);
+                if (vehicleCompressed.isEmpty()) {
+                    responseVehicle = null;
+                    break;
+                }
                 var vehicleDecompressed = CryptoServices.decompress(vehicleCompressed);
                 var vehicleDatas = vehicleDecompressed.split("#");
                 responseVehicle = new Vehicle(vehicleDatas[0], Long.parseLong(vehicleDatas[1]), vehicleDatas[2], vehicleDatas[3], new Driver(vehicleDatas[4], vehicleDatas[5]));
